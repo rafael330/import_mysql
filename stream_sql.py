@@ -22,7 +22,8 @@ def connect_to_mysql():
         user='root',
         password='@Kaclju2125.',
         host='127.0.0.1',  # Use 127.0.0.1 em vez de localhost
-        port=3306
+        port=3306,
+        unix_socket=None  # Força a conexão TCP/IP
     )
 
 # Função principal para upload de dados
