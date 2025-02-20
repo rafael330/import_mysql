@@ -19,10 +19,11 @@ def load_file(file_path, file_type, sheet_name=None):
 # Função para conectar ao MySQL
 def connect_to_mysql():
     return mysql.connector.connect(
-        user='root',
-        password='@Kaclju2125.',
-        host='127.0.0.1',  # Use 127.0.0.1 em vez de localhost
+        user=os.getenv("MYSQL_USER"),  # Usuário do MySQL
+        password=os.getenv("MYSQL_PASSWORD"),  # Senha do MySQL
+        host=os.getenv("MYSQL_HOST"),  # Endereço IP público do servidor MySQL
         port=3306,
+        database=os.getenv("MYSQL_DATABASE"),  # Nome do banco de dados
         unix_socket=None  # Força a conexão TCP/IP
     )
 
