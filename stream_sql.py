@@ -21,7 +21,7 @@ def connect_to_mysql():
     return mysql.connector.connect(
         user='root',
         password='@Kaclju2125.',
-        host='127.0.0.1',
+        host='127.0.0.1',  # Use 127.0.0.1 em vez de localhost
         port=3306
     )
 
