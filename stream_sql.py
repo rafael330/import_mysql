@@ -17,13 +17,13 @@ def load_file(file_path, file_type, sheet_name=None):
     return df
 
 # Função para conectar ao MySQL
-def connect_to_mysql():
+def connect_to_mysql(db_name=None):
     return mysql.connector.connect(
-        user=os.getenv("MYSQL_USER"),  # Usuário do MySQL
-        password=os.getenv("MYSQL_PASSWORD"),  # Senha do MySQL
-        host=os.getenv("MYSQL_HOST"),  # Endereço IP público do servidor MySQL
-        port=3306,
-        database=os.getenv("MYSQL_DATABASE"),  # Nome do banco de dados
+        user='root',  # Substitua pelo usuário do MySQL
+        password='@Kaclju2125.',  # Substitua pela senha do MySQL
+        host='0.tcp.sa.ngrok.io',  # Endereço público gerado pelo Ngrok
+        port=10352,  # Porta gerada pelo Ngrok
+        database=db_name,  # Banco de dados dinâmico
         unix_socket=None  # Força a conexão TCP/IP
     )
 
