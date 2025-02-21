@@ -22,7 +22,7 @@ def connect_to_mysql(db_name=None):
         user='root',  # Substitua pelo usuário do MySQL
         password='@Kaclju2125.',  # Substitua pela senha do MySQL
         host='0.tcp.sa.ngrok.io',  # Endereço público gerado pelo Ngrok
-        port=10352,  # Porta gerada pelo Ngrok
+        port=11043,  # Porta gerada pelo Ngrok
         database=db_name,  # Banco de dados dinâmico
         unix_socket=None  # Força a conexão TCP/IP
     )
