@@ -3,6 +3,7 @@ import pandas as pd
 import mysql.connector
 from mysql.connector import errorcode
 import os
+from datetime import datetime
 
 # Configuração da página
 st.set_page_config(page_title="Upload de Dados para MySQL", page_icon="📊")
@@ -99,6 +100,8 @@ def upload_data(file_path, file_type, sheet_name, db_name, table_name):
             # Remover o valor da coluna 'id' para permitir auto-incremento
             if 'id' in df.columns:
                 row = row[1:]  # Remove o valor da coluna 'id'
+            # Converter timestamps para o formato MySQL
+            row = [value.strftime('%Y-%m-%d %H:%M:%S') if isinstance(value, datetime) else value for value in row]
             placeholders = ', '.join(['%s'] * len(row))
             columns = ', '.join([f'`{col}`' for col in df.columns if col != 'id'])
             values = tuple(row)
