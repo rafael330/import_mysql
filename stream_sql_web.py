@@ -5,6 +5,8 @@ from mysql.connector import errorcode
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+import tempfile
+import os
 
 # Configuração da página
 st.set_page_config(page_title="Upload de Dados do Google Sheets para MySQL", page_icon="📊")
@@ -57,10 +59,15 @@ def map_dtype(dtype):
         return 'TEXT(255)'
 
 # Função principal para upload de dados
-def upload_data(credentials_path, sheet_url, sheet_name, db_name, table_name):
+def upload_data(credentials_file, sheet_url, sheet_name, db_name, table_name):
     cursor = None
     cnx = None
     try:
+        # Salvar o arquivo de credenciais temporariamente
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp_file:
+            tmp_file.write(credentials_file.getvalue())
+            credentials_path = tmp_file.name
+
         # Conectar ao MySQL
         cnx = connect_to_mysql()
         cursor = cnx.cursor()
@@ -123,10 +130,13 @@ def upload_data(credentials_path, sheet_url, sheet_name, db_name, table_name):
             cursor.close()
         if cnx:
             cnx.close()
+        # Remover o arquivo temporário após o uso
+        if credentials_path:
+            os.unlink(credentials_path)
 
 # Interface do Streamlit
 st.sidebar.header("Configurações do Google Sheets")
-credentials_path = st.sidebar.file_uploader("Carregar arquivo de credenciais JSON", type=["json"])
+credentials_file = st.sidebar.file_uploader("Carregar arquivo de credenciais JSON", type=["json"])
 sheet_url = st.sidebar.text_input("URL do Google Sheets")
 sheet_name = st.sidebar.text_input("Nome da Aba")
 
@@ -135,7 +145,7 @@ db_name = st.sidebar.text_input("Nome do Banco de Dados")
 table_name = st.sidebar.text_input("Nome da Tabela")
 
 if st.sidebar.button("Upload"):
-    if credentials_path and sheet_url and sheet_name and db_name and table_name:
-        upload_data(credentials_path, sheet_url, sheet_name, db_name, table_name)
+    if credentials_file and sheet_url and sheet_name and db_name and table_name:
+        upload_data(credentials_file, sheet_url, sheet_name, db_name, table_name)
     else:
         st.error("Por favor, preencha todos os campos obrigatórios.")
